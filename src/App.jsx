@@ -3,11 +3,8 @@ import "./styles.css";
 
 export const App = () => {
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setInconpleteTodos] = useState([
-    "ああああ",
-    "いいいい",
-  ]);
-  const [completeTodos, setConpleteTodos] = useState(["うううう"]);
+  const [incompleteTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
 
   const onChangeTodoText = (event) => setTodoText(event.target.value);
 
@@ -15,7 +12,7 @@ export const App = () => {
   const onClickAdd = () => {
     if (todoText === "") return;
     const newTodos = [...incompleteTodos, todoText];
-    setInconpleteTodos(newTodos);
+    setIncompleteTodos(newTodos);
     setTodoText("");
   };
 
@@ -23,7 +20,7 @@ export const App = () => {
   const onClickDelete = (index) => {
     const newTodos = [...incompleteTodos];
     newTodos.splice(index, 1);
-    setInconpleteTodos(newTodos);
+    setIncompleteTodos(newTodos);
   };
 
   // 完了ボタン押下時処理
@@ -32,8 +29,18 @@ export const App = () => {
     newIncompleteTodos.splice(index, 1);
 
     const newConpleteTodos = [...completeTodos, incompleteTodos[index]];
-    setInconpleteTodos(newIncompleteTodos);
-    setConpleteTodos(newConpleteTodos);
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newConpleteTodos);
+  };
+
+  // 戻るボタン押下時処理
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+    setCompleteTodos(newCompleteTodos);
+    setIncompleteTodos(newIncompleteTodos);
   };
 
   return (
@@ -67,7 +74,7 @@ export const App = () => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>戻す</button>
+                <button onClick={() => onClickBack(index)}>戻す</button>
               </div>
             );
           })}
